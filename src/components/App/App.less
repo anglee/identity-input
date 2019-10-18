@@ -1,0 +1,34 @@
+@import '../../styles/variables.less';
+
+.App {
+  &-header {
+    color: white;
+    height: @alee-header-height;
+    line-height: @alee-header-height;
+  }
+
+  &-content {
+    min-height: ~'calc(100vh - @{alee-header-height} - @{alee-footer-height})';
+    padding-top: 64px;
+    overflow-x: hidden;
+
+    .alee-page {
+      width: 640px;
+      margin: 0 auto;
+      padding: 32px 64px;
+      background-color: white;
+    }
+  }
+
+  &-footer {
+    height: @alee-footer-height;
+    text-align: center;
+  }
+}
+
+//:global {
+//  .ant-layout {
+//    min-height: ~"calc(100vh - @{alee-header-height})";
+//    overflow-x: hidden;
+//  }
+//}

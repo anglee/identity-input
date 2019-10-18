@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const CracoAntDesignPlugin = require("craco-antd");
+const CracoAntDesignPlugin = require('craco-antd');
 
 module.exports = {
   plugins: [
@@ -7,8 +7,8 @@ module.exports = {
       plugin: CracoAntDesignPlugin,
       options: {
         customizeTheme: {
-          "@primary-color": "#b27fea",
-          "@link-color": "#1DA57A",
+          '@primary-color': '#52c41a',
+          '@link-color': '#1DA57A',
         },
       },
     },
@@ -18,7 +18,7 @@ module.exports = {
     configure(config) {
       // eslint-disable-next-line no-param-reassign
       config.transformIgnorePatterns = [
-        "/node_modules/(?!antd|rc-pagination|rc-calendar|rc-tooltip)/.+\\.js$",
+        '/node_modules/(?!antd|rc-pagination|rc-calendar|rc-tooltip)/.+\\.js$',
       ];
       return config;
     },
