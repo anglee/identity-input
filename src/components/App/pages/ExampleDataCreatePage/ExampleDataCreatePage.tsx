@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useHistory } from 'react-router';
 import ExampleForm, {
   fromFormValues,
   IExampleFormValues,
@@ -7,7 +7,7 @@ import ExampleForm, {
 import { IExampleDataEditable } from '../../../../types/IExampleData';
 import exampleDataApi from '../../../../utils/api/apiExampleData';
 
-const ExampleDataCreatePage = ({ history }: RouteComponentProps<{}>) => {
+const ExampleDataCreatePage = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const createExampleData = useCallback(async (data: IExampleDataEditable) => {
@@ -21,6 +21,7 @@ const ExampleDataCreatePage = ({ history }: RouteComponentProps<{}>) => {
       setIsCreating(false);
     }
   }, []);
+  const history = useHistory();
 
   return (
     <section className="ExampleDataEditPage alee-page">
@@ -39,4 +40,4 @@ const ExampleDataCreatePage = ({ history }: RouteComponentProps<{}>) => {
   );
 };
 
-export default withRouter(ExampleDataCreatePage);
+export default ExampleDataCreatePage;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import qs from 'qs';
 import { Alert, Spin } from 'antd';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { initialize } from 'redux-form';
 import ExampleForm, {
@@ -20,7 +20,8 @@ const getExampleDataId = (search: string): string => {
   return qs.parse(search, { ignoreQueryPrefix: true }).id;
 };
 
-const ExampleDataEditPage = ({ location }: RouteComponentProps<{}>) => {
+const ExampleDataEditPage = () => {
+  const location = useLocation();
   const exampleDataId = getExampleDataId(location.search);
 
   const { isFetching, fetchError, fetchedExampleData } = useFetchedExampleData(exampleDataId);
@@ -70,4 +71,4 @@ const ExampleDataEditPage = ({ location }: RouteComponentProps<{}>) => {
   );
 };
 
-export default withRouter(ExampleDataEditPage);
+export default ExampleDataEditPage;
