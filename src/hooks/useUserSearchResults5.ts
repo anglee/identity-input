@@ -10,7 +10,7 @@ interface Response {
   isPending: boolean;
   error: string | null;
 }
-const useUserSearchResults = (query: string): Response => {
+const useUserSearchResults = (query: string, pageCount = 1): Response => {
   const searchResults = useSelector(selectors.getUserSearchResults(query));
   const isPending = useSelector(selectors.getUserSearchResultsIsPending(query));
   const error = useSelector(selectors.getUserSearchResultsError(query));
@@ -18,13 +18,13 @@ const useUserSearchResults = (query: string): Response => {
   const dispatch = useDispatch();
   useEffect(() => {
     const doSearch = async (q: string): Promise<void> => {
-      await dispatch(apiSearchUsersThunk(q));
+      await dispatch(apiSearchUsersThunk(q, pageCount));
     };
 
-    if (!_.isEmpty(query) && searchResults === undefined && !isPending) {
+    if (!_.isEmpty(query)) {
       doSearch(query).then(_.noop);
     }
-  }, [query, dispatch, isPending, searchResults]);
+  }, [query, pageCount, dispatch]);
 
   return {
     searchResults: searchResults || [],

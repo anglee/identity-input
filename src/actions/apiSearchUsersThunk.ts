@@ -8,17 +8,29 @@ import { IReduxState } from '../reducers/root';
 
 const apiSearchUsersThunk = (
   query: string,
+  pageCount: number,
 ): ThunkAction<Promise<User[]>, IReduxState, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ) => {
   const requestId = _.uniqueId('apiSearchUsers_');
-  dispatch({ type: 'SEARCH_USERS_API_REQUEST', query, requestId });
+  dispatch({ type: 'SEARCH_USERS_API_REQUEST', query, pageCount, requestId });
   try {
-    const searchResults: User[] = await apiUserSearch.search(query);
-    dispatch({ type: 'SEARCH_USERS_API_SUCCESS', query, requestId, searchResults });
+    const fetchedPages = await Promise.all(
+      _.range(1, pageCount + 1).map(page => {
+        return apiUserSearch.search(query, page);
+      }),
+    );
+    const searchResults = _.flatten(fetchedPages);
+    dispatch({ type: 'SEARCH_USERS_API_SUCCESS', query, pageCount, requestId, searchResults });
     return searchResults;
   } catch (error) {
-    dispatch({ type: 'SEARCH_USERS_API_FAILURE', query, requestId, error: error.message });
+    dispatch({
+      type: 'SEARCH_USERS_API_FAILURE',
+      query,
+      pageCount,
+      requestId,
+      error: error.message,
+    });
     throw error;
   }
 };

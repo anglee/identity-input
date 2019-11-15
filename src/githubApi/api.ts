@@ -2,11 +2,13 @@ import _ from 'lodash';
 import { User } from '../types';
 
 const apiUserSearch = {
-  search: async (searchString: string): Promise<User[]> => {
+  search: async (searchString: string, page = 0): Promise<User[]> => {
     if (_.isEmpty(searchString)) {
       return [];
     }
-    const response = await fetch(`https://api.github.com/search/users?q=${searchString}`);
+    const response = await fetch(
+      `https://api.github.com/search/users?q=${searchString}&page=${page}`,
+    );
     // const response = await fetch(`https://api.github.com/users/zpao`);
     if (response.status !== 200) {
       throw new Error(`GitHub API returned Error ${response.status}`);

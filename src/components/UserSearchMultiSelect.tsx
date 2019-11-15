@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Select, Spin } from 'antd';
 import useUserSearchResults from '../hooks/useUserSearchResults5';
@@ -13,7 +13,8 @@ interface Props {
 
 const UserSearchMultiSelect = ({ value: users, onChange }: Props) => {
   const [searchString, setSearchString] = useState<string>('');
-  const { searchResults, isPending } = useUserSearchResults(searchString);
+  const [pageCount, setPageCount] = useState<number>(1);
+  const { searchResults, isPending } = useUserSearchResults(searchString, pageCount);
   const handleSearch = useCallback(
     _.debounce((s: string) => {
       setSearchString(s);
@@ -21,8 +22,27 @@ const UserSearchMultiSelect = ({ value: users, onChange }: Props) => {
     [],
   );
 
+  useEffect(() => {
+    setPageCount(1);
+  }, [searchString]);
+
+  const handlePopupScroll = useCallback(
+    e => {
+      e.persist();
+      const { target } = e;
+      if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 1) {
+        // scrolled to the end, increase the page count
+        if (!isPending) {
+          setPageCount(c => c + 1);
+        }
+      }
+    },
+    [isPending],
+  );
+
   return (
     <div>
+      {pageCount}
       <Select
         mode="multiple"
         style={{ minWidth: 270 }}
@@ -41,6 +61,7 @@ const UserSearchMultiSelect = ({ value: users, onChange }: Props) => {
           );
         }}
         notFoundContent={isPending ? <Spin size="small" /> : null}
+        onPopupScroll={handlePopupScroll}
       >
         {_.map(searchResults, user => (
           <Select.Option key={user.username} value={user.username}>
