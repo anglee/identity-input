@@ -49,19 +49,28 @@ const useUserSearchResults = (query: string): Response => {
   const [state, dispatch] = useReducer(useReducerLogger(reducer), initialState);
 
   useEffect(() => {
+    let isCancelled = false;
     const doSearch = async (q: string): Promise<void> => {
       dispatch({ type: 'SEARCH_USERS_API_REQUEST', q });
       try {
         const searchResults: User[] = await apiUserSearch.search(q);
-        dispatch({ type: 'SEARCH_USERS_API_SUCCESS', q, searchResults });
+        if (!isCancelled) {
+          dispatch({ type: 'SEARCH_USERS_API_SUCCESS', q, searchResults });
+        }
       } catch (error) {
-        dispatch({ type: 'SEARCH_USERS_API_FAILURE', q, error: error.message });
+        if (!isCancelled) {
+          dispatch({ type: 'SEARCH_USERS_API_FAILURE', q, error: error.message });
+        }
       }
     };
 
     if (!_.isEmpty(query)) {
       doSearch(query).then(_.noop);
     }
+
+    return () => {
+      isCancelled = true;
+    };
   }, [query]);
 
   return {

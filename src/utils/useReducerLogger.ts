@@ -13,7 +13,8 @@ const useReducerLogger = <T>(reducer: (state: T, action: AnyAction) => T, prefix
       headerCSS.push(titleCSS);
 
       /* eslint-disable no-console */
-      console.groupCollapsed(`${prefix}%c${title}`, ...headerCSS);
+      // console.groupCollapsed(`${prefix}%c${title}`, ...headerCSS);
+      console.group(`${prefix}%c${title}`, ...headerCSS);
       console.log('%cprev state', 'color: #9E9E9E; font-weight: 700;', state);
       console.log('%caction    ', 'color: #00A7F7; font-weight: 700;', action);
       console.log('%cnext State', 'color: #47B04B; font-weight: 700;', next);
