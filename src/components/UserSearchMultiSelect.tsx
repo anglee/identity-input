@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import _ from 'lodash';
 import { Select, Spin } from 'antd';
-import useUserSearchResults from '../hooks/useUserSearchResults3';
+import useUserSearchResults from '../hooks/useUserSearchResults4';
 import { User } from '../types';
 
 const DEBOUNCE = 300;

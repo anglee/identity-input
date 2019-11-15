@@ -74,9 +74,9 @@ const useUserSearchResults = (query: string): Response => {
   }, [query]);
 
   return {
+    searchResults: selectors.getSearchResults(state),
     isPending: selectors.getIsFetching(state),
     error: selectors.getFetchingError(state),
-    searchResults: selectors.getSearchResults(state),
   };
 };
 
