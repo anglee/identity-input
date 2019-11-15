@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ExampleForm validate should check if name is empty 1`] = `
-Object {
-  "name": "name is required",
-}
-`;

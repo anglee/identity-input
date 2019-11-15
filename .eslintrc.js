@@ -48,7 +48,7 @@ module.exports = {
         allowHigherOrderFunctions: true,
       },
     ],
-    '@typescript-eslint/interface-name-prefix': ['error', 'always'],
+    '@typescript-eslint/interface-name-prefix': ['off'],
     'react/destructuring-assignment': ['off'],
     'react/state-in-constructor': ['off'],
     'react/jsx-boolean-value': ['off'],

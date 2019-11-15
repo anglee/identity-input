@@ -9,3 +9,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.PermissionsInput {
+  max-width: 1024px;
+  margin: 48px auto;
+}
+
+.debug-results {
+  max-width: 1024px;
+  margin: 48px auto;
+}
