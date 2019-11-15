@@ -63,7 +63,7 @@
     "eslint:fix": "eslint --ext .js,.jsx,.ts,.tsx src --ignore-pattern src/serviceWorker.ts --fix",
     "lint": "run-s eslint",
     "fix": "run-s eslint:fix prettier",
-    "prepush": "run-s lint test",
+    "prepush": "run-s lint",
     "eject": "react-scripts eject"
   },
   "prettier": {
