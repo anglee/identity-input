@@ -1,55 +1,28 @@
-import { AnyAction, Reducer } from 'redux';
-import { User } from '../../types';
+import _ from 'lodash';
+import { combineReducers } from 'redux';
+import resultsLoginCacheReducer, * as fromResultsLoginCache from './resultsLoginCache/resultsLoginCacheReducer';
+import usersReducer, * as fromUsers from './users/usersReducer';
 
 export interface IState {
-  searchResults: User[];
-  fetchRequestId: string | null;
-  fetchError: string | null;
+  resultsLoginCache: fromResultsLoginCache.IState;
+  users: fromUsers.IState;
 }
 
-const initialState: IState = {
-  searchResults: [],
-  fetchRequestId: null,
-  fetchError: null,
-};
+export default combineReducers({
+  resultsLoginCache: resultsLoginCacheReducer,
+  users: usersReducer,
+});
 
-const reducer: Reducer = (state: IState = initialState, action: AnyAction) => {
-  switch (action.type) {
-    case 'SEARCH_USER_API_REQUEST': {
-      return {
-        fetchRequestId: action.requestId,
-        searchResults: [],
-        fetchError: null,
-      };
-    }
-    case 'SEARCH_USER_API_SUCCESS': {
-      if (action.fetchRequestId === state.fetchRequestId) {
-        return {
-          ...state,
-          fetchRequestId: null,
-          searchResults: action.searchResults,
-        };
-      }
-      return state;
-    }
-    case 'SEARCH_USER_API_FAILURE': {
-      if (action.fetchRequestId === state.fetchRequestId) {
-        return {
-          ...state,
-          fetchRequestId: null,
-          fetchError: action.error,
-        };
-      }
-      return state;
-    }
-    default: {
-      return state;
-    }
+export const getSearchResults = (state: IState, query: string) => {
+  const logins = fromResultsLoginCache.getSearchResultLogins(state.resultsLoginCache, query);
+  if (!logins) {
+    return undefined;
   }
+  return _.map(logins, login => fromUsers.getUser(state.users, login));
 };
-
-export default reducer;
-
-export const getSearchResults = (state: IState) => state.searchResults;
-export const getIsPending = (state: IState) => state.fetchRequestId !== null;
-export const getError = (state: IState) => state.fetchError;
+export const getIsPending = (state: IState, query: string) => {
+  return fromResultsLoginCache.getIsPending(state.resultsLoginCache, query);
+};
+export const getError = (state: IState, query: string) => {
+  return fromResultsLoginCache.getError(state.resultsLoginCache, query);
+};

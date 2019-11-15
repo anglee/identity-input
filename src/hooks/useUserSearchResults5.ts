@@ -11,9 +11,9 @@ interface Response {
   error: string | null;
 }
 const useUserSearchResults = (query: string): Response => {
-  const searchResults = useSelector(selectors.getUserSearchResults);
-  const isPending = useSelector(selectors.getUserSearchResultsIsPending);
-  const error = useSelector(selectors.getUserSearchResultsError);
+  const searchResults = useSelector(selectors.getUserSearchResults(query));
+  const isPending = useSelector(selectors.getUserSearchResultsIsPending(query));
+  const error = useSelector(selectors.getUserSearchResultsError(query));
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,13 +21,13 @@ const useUserSearchResults = (query: string): Response => {
       await dispatch(apiSearchUsersThunk(q));
     };
 
-    if (!_.isEmpty(query)) {
+    if (!_.isEmpty(query) && searchResults === undefined && !isPending) {
       doSearch(query).then(_.noop);
     }
-  }, [query, dispatch]);
+  }, [query, dispatch, isPending, searchResults]);
 
   return {
-    searchResults,
+    searchResults: searchResults || [],
     isPending,
     error,
   };

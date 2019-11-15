@@ -10,12 +10,12 @@ export default combineReducers({
 });
 
 export const selectors = {
-  getUserSearchResults: (state: IReduxState) =>
-    fromUserSearchResultsReducer.getSearchResults(state.userSearchResults),
+  getUserSearchResults: (query: string) => (state: IReduxState) =>
+    fromUserSearchResultsReducer.getSearchResults(state.userSearchResults, query),
 
-  getUserSearchResultsIsPending: (state: IReduxState) =>
-    fromUserSearchResultsReducer.getIsPending(state.userSearchResults),
+  getUserSearchResultsIsPending: (query: string) => (state: IReduxState) =>
+    fromUserSearchResultsReducer.getIsPending(state.userSearchResults, query),
 
-  getUserSearchResultsError: (state: IReduxState) =>
-    fromUserSearchResultsReducer.getError(state.userSearchResults),
+  getUserSearchResultsError: (query: string) => (state: IReduxState) =>
+    fromUserSearchResultsReducer.getError(state.userSearchResults, query),
 };
